@@ -5,6 +5,7 @@ import UserModule from './store/modules/user'
 import TuyenDuongModule from './store/modules/tuyenduong'
 import TinhTrangModule from './store/modules/tinhtrang'
 import CayXanhModule from './store/modules/cayxanh'
+import DashboardModule from './store/modules/dashboard'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -58,6 +59,7 @@ export default new Vuex.Store({
     UserModule,
     TuyenDuongModule,
     TinhTrangModule,
-    CayXanhModule
+    CayXanhModule,
+    DashboardModule
   }
 })

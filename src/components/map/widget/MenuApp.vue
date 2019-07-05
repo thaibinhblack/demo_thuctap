@@ -32,10 +32,22 @@ export default {
     return {
       items: [
                 {
+                  title: 'Quản lý',
+                  icon: '<i class="fas fa-tachometer-alt"></i>',
+                  id: 'quanly'
+                },
+                {
                     title: 'Thêm cây xanh mới',
                     icon: '<i class="fas fa-pen"></i>',
                     id: 'addFeature'
-                }
+                },
+                {
+                  title: 'Tìm kiếm cây xanh',
+                  icon: '<i class="fas fa-search"></i>',
+                  id: 'searchFeature'
+                },
+                {}
+                
           ],
       lastClicked: ''
     }
@@ -45,6 +57,10 @@ export default {
     handleClick (item) {
         console.log(item)
         this.$store.dispatch("show",item.id)
+        if(item.id == "quanly")
+        {
+          this.$router.push('/admin')
+        }
     }
   }
 }

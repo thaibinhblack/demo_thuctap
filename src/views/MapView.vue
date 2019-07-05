@@ -4,6 +4,7 @@
       <media-feature />
       <menu-app />
       <add-feature />
+      <search-feature />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import UpdateFeature from '@/components/map/widget/UpdateFeature'
 import MediaFeature from '@/components/map/widget/MediaFeature'
 import MenuApp from '@/components/map/widget/MenuApp'
 import AddFeature from '@/components/map/widget/AddFeature'
+import SearchFeature from '@/components/map/widget/SearchFeature'
 export default {
   name: 'mapView',
   components:
@@ -22,7 +24,8 @@ export default {
     UpdateFeature,
     MediaFeature,
     MenuApp,
-    AddFeature
+    AddFeature,
+    SearchFeature
   },
   computed:
   {
@@ -32,7 +35,7 @@ export default {
   {
     showMedia(newVal,oldVal)
     {
-      console.log('media',newVal,oldVal)
+     
     }
   },
   data()
@@ -148,35 +151,29 @@ export default {
                       title: "Cập nhật thông tin cây xanh",
                       className: "esri-icon-edit"
                   }, {
-                      id: "edit",
-                      title: "Tới trang chỉnh sửa",
-                      className: "esri-icon-home"
+                      id: "delete",
+                      title: "Xóa",
+                      className: "esri-icon-trash"
                   }]
               }
           });
           map.add(featureLayer)
-
-          view.popup.viewModel.on("trigger-action", async(event) => {
-            
-            // if(event.action.id == "edit")
-            // {
-                const objecid = await event.target.selectedFeature.attributes.OBJECTID
-                this.$store.dispatch("objectid",objecid)
-
-                // console.log(event.action.id, event.action.className)
-                this.$store.dispatch("show",event.action.className)
-            // }
-            // console.log(this.show)
-            
-          })
-
-          // this.$store.dispatch('map',map)
-          // this.$store.dispatch('view',view)
-          // this.$store.dispatch('featurelayer',featureLayer)
+          this.$store.state.featurelayer = await featureLayer
           this.$store.state.view = await view
           this.$store.state.map = await map
-          this.$store.state.featureLayer = await featureLayer
-          console.log('view map',this.$store.state.view)
+          this.$store.dispatch("featurelayer",featureLayer)
+          this.$store.dispatch("view",view)
+          this.$store.dispatch("map",map)
+
+          view.popup.viewModel.on("trigger-action", async(event) => {
+                
+                const objecid = await event.target.selectedFeature.attributes.OBJECTID
+                this.$store.dispatch("objectid",objecid)
+                this.$store.dispatch("show",event.action.className)
+          })
+         
+          
+         
       })
       this.$store.dispatch("view",this.$store.state.view)
     }
@@ -188,7 +185,7 @@ export default {
   mounted()
   {
     this.loadMap()
-    console.log('map view',this.showMedia)
+
     
   },
   updated()

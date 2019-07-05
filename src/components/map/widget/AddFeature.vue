@@ -39,7 +39,7 @@
       </mdb-modal-footer>
       
   </mdb-modal>
-   </form>
+</form>
 
 </template>
 <script>
@@ -143,6 +143,8 @@ import { async, isPromise } from 'q';
           })
           .then((response) => {
             alert("thêm cây mới thành công!")
+            this.$store.state.featurelayer.refresh()
+            this.$store.state.view.graphics.removeAll()
           }).catch((error) => {
             alert("thêm cây mới thất bại!, xin vui lòng thử lại")
           })
@@ -159,3 +161,4 @@ import { async, isPromise } from 'q';
     }
   }
 </script>
+

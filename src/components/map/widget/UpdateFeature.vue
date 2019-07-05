@@ -4,13 +4,17 @@
     <mdb-modal fullHeight position="right" class="modal_editfeature" direction="right" :show="showUpdate" v-if="FeatureSelected != null" @close="closeModal">
         <mdb-modal-header>
             <mdb-modal-title>
-              <p>Cập nhật thông tin cây thứ {{FeatureSelected.attributes.OBJECTID}} </p>
+             
+              <p>  <span class="btn-back" v-if="OpenSearch == true" @click="routerBack"><i class="fas fa-chevron-left"></i></span> Cập nhật thông tin cây thứ {{FeatureSelected.attributes.OBJECTID}} </p>
               <p>Cây {{FeatureSelected.attributes.MaTenCX}} - Số hiệu: {{FeatureSelected.attributes.SoHieu}} </p>
             </mdb-modal-title>
         </mdb-modal-header>
         <mdb-modal-body>
            <mdb-input label="Số hiệu" v-model="FeatureSelected.attributes.SoHieu"  />
-           
+           <select class="browser-default custom-select" id="select-tinhtrang" v-model="FeatureSelected.attributes.MaTenCX">
+                <option value="null"> Chủng Loại Cây Xanh </option>
+                <option v-for="(cx,index) in cayxanh" :key="index" :value="cx.matencx" > {{cx.tencx}} </option>
+            </select>
            <mdbInput label="Chiều cao" :value="FeatureSelected.attributes.ChieuCao"  />
            <mdbInput label="Độ rộng tán" :value="FeatureSelected.attributes.DoRongTan" />
            <mdbInput label="Đường kính" :value="FeatureSelected.attributes.DuongKinh" />
@@ -31,8 +35,8 @@
            <mdbInput type="textarea" label="Ghi chú"  v-model="FeatureSelected.attributes.GhiChu" />
         </mdb-modal-body>
         <mdb-modal-footer>
-            <mdb-btn color="primary" @click="updateFeature(FeatureSelected)">Save changes</mdb-btn>
-            <mdb-btn id="button-delete" >Delete </mdb-btn>
+            <mdb-btn id="button-save" color="primary" @click="updateFeature(FeatureSelected)">Save changes</mdb-btn>
+            <mdb-btn id="button-delete" @click="deleteFeature">Delete </mdb-btn>
             <mdb-btn id="button-cancel" @click="closeModal">Cancel</mdb-btn>
         </mdb-modal-footer>
     </mdb-modal>
@@ -56,7 +60,7 @@
     },
     computed:
     {
-       ...mapGetters(["showUpdate","FeatureSelected","tuyenduong","tinhtrang","alert"]) 
+       ...mapGetters(["showUpdate","FeatureSelected","tuyenduong","tinhtrang","cayxanh","alert","OpenSearch"]) 
     },
     data() {
       return {
@@ -69,15 +73,27 @@
 
     methods:
     {
-     ...mapActions(["alertSuccessUpdate","updateFeature","view"]),
+     ...mapActions(["alertSuccessUpdate","updateFeature","view","show"]),
       closeModal(){
         this.$store.dispatch('showUpdate',false)
+        this.$store.state.featurelayer.definitionExpression = ""
+        this.$store.state.view.popup.close()
        
       },
       deleteFeature(){
-        alert("bạn vừa xóa 1 cây")
+        this.$store.dispatch("show","esri-icon-trash")
+        this.closeModal()
       },
+      routerBack()
+      {
+        this.$store.dispatch("showUpdate",false)
+        this.$store.dispatch("showSearch",true)
+      }
     },
+    updated()
+    {
+      console.log(this.showUpdate)
+    }
     
    };
 </script>
@@ -141,5 +157,18 @@
     border-radius: unset;
     outline: none !important;
     box-shadow: none !important;
+  }
+  .btn-back {margin-right: 15px;cursor: pointer;}
+  #button-save{
+    background-color: #17a2b8 !important;
+    border-color: #17a2b8; 
+  }
+  #button-delete{
+    background-color: #1d2124 !important;
+  }
+  #button-cancel{
+    background-color: #dae0e5 !important;
+    padding: 10px 20px;
+    color: #212529;
   }
 </style>
