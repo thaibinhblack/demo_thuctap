@@ -59,7 +59,7 @@ export default {
         this.$store.dispatch("show",item.id)
         if(item.id == "quanly")
         {
-          this.$router.push('/admin')
+          this.$router.push('/quanly/dashboard')
         }
     }
   }

@@ -37,9 +37,9 @@
       @vuetable-pagination:change-page="onChangePage"
     ></vuetable-pagination>
     <add-user v-bind:show="show"  @updateshow="updateshow" />
-    <!-- <EditUser v-bind:edit="edit" v-bind:user="user" @edited="edited" />
-    <ModalDelete v-bind:dlete="dlete" v-bind:user="user" @deleted="deleted" /> -->
-  </div>
+   <edit-user v-bind:edit="edit" v-bind:user="user" @edited="edited" />
+</div>
+    <!-- <ModalDelete v-bind:dlete="dlete" v-bind:user="user" @deleted="deleted" /> --> 
 </template>
 
 <script>
@@ -47,7 +47,7 @@ import Vuetable from 'vuetable-2/src/components/Vuetable'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination'
 import moment from "moment"
 import AddUser from './AddUser.vue'
-// import EditUser from './User/EditUser.vue'
+import EditUser from './EditUser.vue'
 // import ModalDelete from './User/MdDelete.vue'
 import axios from 'axios'
 export default {
@@ -55,7 +55,8 @@ export default {
     components: {
     Vuetable,
     VuetablePagination,
-    AddUser
+    AddUser,
+    EditUser
   },
   data () {
     return {
@@ -81,7 +82,7 @@ export default {
           title: 'Tên',
         //   sortField: 'email'
         },
-        'birthdate', 'username',
+
         {
           name: 'email',
           title: 'Email',
@@ -209,6 +210,7 @@ export default {
   },
   created () {
     this.apiData()
+    console.log(this.$session.get('token'))
   }
 }
 </script>

@@ -8,18 +8,26 @@
                     <mdb-modal-title>Thêm mới user</mdb-modal-title>
                 </mdb-modal-header>
                 <mdb-modal-body>
-                    <mdb-input v-model="user.firstname" label="First Name" size="sm"  required/>
-                    <mdb-input v-model="user.lastname" label="Last Name" size="sm" required />
-                    <select v-model="user.gender" class="form-control" required>
-                        <option value="-1" selected>Gender</option>
-                        <option value="0">Male</option>
-                        <option value="1">FeMale</option>
-                    </select>
+                    <mdb-input v-model="user.first_name" label="Họ" size="sm"  required/>
+                    <mdb-input v-model="user.last_name" label="Tên" size="sm" required />
+                  
                     <!-- <mdb-input label="Gender" size="sm" /> -->
-                    <mdb-input v-model="user.mobile" label="Mobile" size="sm" required />
-                    <mdb-input v-model="user.address" type="textarea" label="Address" size="sm" required />
+                    <!-- <mdb-input v-model="user.mobile" label="Mobile" size="sm" required />
+                    <mdb-input v-model="user.address" type="textarea" label="Address" size="sm" required /> -->
+                    <mdb-input v-model="user.email" label="Email" size="sm" required />
                     <mdb-input v-model="user.username" label="Username" size="sm" required />
                     <mdb-input v-model="user.password" label="Password" size="sm" required />
+                    <label>Quyền</label>
+                    <div class="custom-control custom-checkbox" >
+                      <input type="checkbox" class="custom-control-input"  id="defaultChecked1" v-model="user.is_active" >
+                      <label class="custom-control-label" for="defaultChecked1">Quyền truy cập hệ thống</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="defaultChecked2" v-model="user.is_staff" checked disabled />
+                      <label class="custom-control-label" for="defaultChecked2">Quyền user</label>
+                    </div>
+                    
+
                 </mdb-modal-body>
                 <mdb-modal-footer>
 
@@ -33,10 +41,11 @@
 </template>
 <script>
 import { mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbBtn, mdbInput, mdbIcon,
-  mdbListGroup, mdbListGroupItem, mdbBadge} from 'mdbvue'
+  mdbListGroup, mdbListGroupItem, mdbBadge } from 'mdbvue'
 import Vue from 'vue'
 import Vuex, { mapState } from 'vuex'
 Vue.use(Vuex)
+import axios from 'axios'
 export default {
   name: 'add-user',
   props: {
@@ -53,7 +62,7 @@ export default {
   data () {
     return {
       user: {
-        gender: -1
+       
       },
       showLocal: false
     }
@@ -77,6 +86,16 @@ export default {
       this.showLocal = false
     },
     addUser () {
+      axios.post('http://113.161.225.252:8001/user/',this.user,{
+        headers: {
+             Authorization: 'Token ' + this.$session.get('token')
+          }
+        }).then((response) => {
+          this.closemodal()
+      }).catch((error) => {
+        alert("Tạo tài khoản mới không thành công! xin vui lòng thử lại!")
+      })
+        
     }
   },
   created () {
