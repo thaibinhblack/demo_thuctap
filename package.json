@@ -15,7 +15,7 @@
     "esri-loader": "^2.9.2",
     "firebase": "^6.2.4",
     "mdbvue": "^5.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "vue": "^2.6.10",
     "vue-easy-lightbox": "^0.3.11",
     "vue-radial-menu": "^1.1.1",
